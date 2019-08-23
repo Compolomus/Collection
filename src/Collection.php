@@ -21,7 +21,7 @@ class Collection
     public function addOne(object $object): self
     {
         if (!($object instanceof $this->generic)) {
-            throw new InvalidArgumentException('Object mast be instanceof ' . $this->generic . ' class ' . get_class($object) . ' given');
+            throw new InvalidArgumentException('Object mast be instanceof ' . $this->generic . ' class, ' . get_class($object) . ' given');
         }
         $this->collection[] = $object;
 
@@ -33,6 +33,11 @@ class Collection
         array_map([$this, 'addOne'], $objects);
 
         return $this;
+    }
+
+    public function count(): int
+    {
+        return count($this->collection);
     }
 
     public function immutable(): self
