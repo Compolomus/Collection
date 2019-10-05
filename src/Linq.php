@@ -50,22 +50,16 @@ class Linq
         switch ($condition) {
             case '=':
                 return $valFirst === $valSecond;
-                break;
             case '!=':
                 return $valFirst !== $valSecond;
-                break;
             case '>':
                 return $valFirst > $valSecond;
-                break;
             case '<':
                 return $valFirst < $valSecond;
-                break;
             case '>=':
                 return $valFirst >= $valSecond;
-                break;
             case '<=':
                 return $valFirst <= $valSecond;
-                break;
             default:
                 throw new InvalidArgumentException('Condition not set');
         }
