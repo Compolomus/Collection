@@ -64,6 +64,13 @@ class CollectionTest extends TestCase
         $obj = new Linq($collection);
         $linq = $obj->where('test > 33');
         $this->assertEquals(count($linq->get()), 9);
+        $this->expectException(InvalidArgumentException::class);
+        $collection = new Collection(stdClass::class);
+        $add = new stdClass();
+        $add->test = 42;
+        $collection->addOne($add);
+        $obj = new Linq($collection);
+        $linq = $obj->where('test dummy 33');
     }
 
     public function testCount(): void

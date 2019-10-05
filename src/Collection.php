@@ -53,7 +53,7 @@ class Collection
 
     private function cmp(string $key, int $order): callable
     {
-        return static function (object $a, object $b) use ($key, $order) {
+        return static function(object $a, object $b) use ($key, $order) {
             return $order ? $a->$key <=> $b->$key : $b->$key <=> $a->$key;
         };
     }
