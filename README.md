@@ -8,11 +8,11 @@
 [![Code Climate](https://codeclimate.com/github/Compolomus/Collection/badges/gpa.svg)](https://codeclimate.com/github/Compolomus/Collection)
 [![Downloads](https://poser.pugx.org/compolomus/Collection/downloads)](https://packagist.org/packages/compolomus/Collection)
 
-## Install:
+# Install:
 
 composer require compolomus/Collection
 
-## Usage:
+# Usage:
 
 ```php
 
@@ -20,7 +20,13 @@ use Compolomus\Collection\Collection;
 
 require __DIR__ . '/vendor/autoload.php';
 
-// New collection
+```
+
+## New collection
+
+### Single add
+
+```php
 
 $collection = new Collection('stdClass');
 
@@ -30,8 +36,12 @@ for ($i = 0; $i <= 42; $i++) {
     $collection->addOne($add);
 }
 
-/*
-// batch add
+```
+
+### Batch add
+
+```php
+
 $array = [];
 for ($i = 0; $i <= 42; $i++) {
     $add = new stdClass();
@@ -39,9 +49,14 @@ for ($i = 0; $i <= 42; $i++) {
     $array[] = $add;
 }
 $collection->addAll($array);
-  */
 
-// Limit
+```
+
+## Limit
+
+### Count limit
+
+```php
 
 $limit1 = $collection->immutable()->limit(5);
 
@@ -75,6 +90,12 @@ Array
         )
 )
  */
+ 
+```
+
+### Limit with offset
+
+```php
 
 $limit2 = $collection->immutable()->limit(3, 3);
 
@@ -99,13 +120,21 @@ Array
 )
  */
 
-// Count
+```
+
+## Count
+
+```php
 
 echo $collection->count(); //43
 echo $limit1->count(); // 5
 echo $limit2->count(); // 3
 
-// Sort
+```
+
+## Sort
+
+```php
 
 $sort = $limit2->immutable()->sort('test', Collection::DESC);
 
@@ -130,7 +159,11 @@ Array
 )
  */
 
-// LINQ
+```
+
+## LINQ
+
+```php
 
 $linq = $collection->where('test > 33');
 

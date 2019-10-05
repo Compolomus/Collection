@@ -5,7 +5,7 @@ namespace Compolomus\Collection;
 use PHPUnit\Framework\TestCase;
 use Exception;
 use InvalidArgumentException;
-use StdClass;
+use stdClass;
 use SplFileObject;
 use ArrayObject;
 
@@ -15,8 +15,8 @@ class CollectionTest extends TestCase
     public function test__construct(): void
     {
         try {
-            $obj = new Collection(StdClass::class);
-            $this->assertInternalType('object', $obj);
+            $obj = new Collection(stdClass::class);
+            $this->assertIsObject($obj);
             $this->assertInstanceOf(Collection::class, $obj);
         } catch (Exception $e) {
             $this->assertContains('Must be initialized ', $e->getMessage());
@@ -25,8 +25,8 @@ class CollectionTest extends TestCase
 
     public function testAddOne(): void
     {
-        $obj = new Collection(StdClass::class);
-        $new = new StdClass();
+        $obj = new Collection(stdClass::class);
+        $new = new stdClass();
         $new->dummy = 'dummy';
         $obj->addOne($new);
         $this->assertEquals($obj->get()[0], $new);
@@ -51,6 +51,19 @@ class CollectionTest extends TestCase
         $obj->addAll($dummy);
         $this->expectException(InvalidArgumentException::class);
         $obj->addAll($dummy2);
+    }
+
+    public function testWhere(): void
+    {
+        $collection = new Collection(stdClass::class);
+        for ($i = 0; $i <= 42; $i++) {
+            $add = new stdClass();
+            $add->test = $i;
+            $collection->addOne($add);
+        }
+        $obj = new Linq($collection);
+        $linq = $obj->where('test > 33');
+        $this->assertEquals(count($linq->get()), 9);
     }
 
     public function testCount(): void
@@ -90,10 +103,16 @@ class CollectionTest extends TestCase
         $this->assertEquals($obj->limit(2)->count(), 2);
     }
 
+    public function testGetGeneric(): void
+    {
+        $obj = new Collection(stdClass::class);
+        $this->assertEquals($obj->getGeneric(), stdClass::class);
+    }
+
     public function testSort(): void
     {
         $array = range(1, 100);
-        $collection = new Collection(StdClass::class);
+        $collection = new Collection(stdClass::class);
 
         foreach ($array as $value) {
             $obj = new StdClass();
@@ -103,7 +122,10 @@ class CollectionTest extends TestCase
 
         $dummy = $collection->immutable()->limit(50);
         $dummy->sort('var', Collection::DESC);
-        $this->assertArraySubset(array_keys($dummy->get()), range(49, 0));
+        $actualArray = range(49, 0);
+        foreach ($dummy->get() as $key => $value) {
+            $this->assertArrayHasKey($key, $actualArray);
+        }
     }
 
     public function testGet(): void
@@ -114,6 +136,6 @@ class CollectionTest extends TestCase
         $dummy[] = new ArrayObject(range(1, 100));
         $dummy[] = new ArrayObject(range(10, 1000, 10));
         $obj->addAll($dummy);
-        $this->assertInternalType('array', $obj->get());
+        $this->assertIsArray($obj->get());
     }
 }

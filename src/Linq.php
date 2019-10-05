@@ -65,7 +65,7 @@ class Linq
         }
     }
 
-    public function prepare(string $field, string $condition, $value): self
+    private function prepare(string $field, string $condition, $value): self
     {
         $new = new Collection($this->collection->getGeneric());
 
