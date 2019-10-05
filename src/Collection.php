@@ -2,6 +2,7 @@
 
 namespace Compolomus\Collection;
 
+use Compolomus\Collection\Linq;
 use InvalidArgumentException;
 
 class Collection
@@ -45,11 +46,23 @@ class Collection
         return clone $this;
     }
 
+    public function getGeneric(): string
+    {
+        return $this->generic;
+    }
+
     private function cmp(string $key, int $order): callable
     {
-        return static function(object $a, object $b) use ($key, $order) {
+        return static function (object $a, object $b) use ($key, $order) {
             return $order ? $a->$key <=> $b->$key : $b->$key <=> $a->$key;
         };
+    }
+
+    public function where(string $query): self
+    {
+        $linq = new Linq($this);
+
+        return (new self($this->getGeneric()))->addAll($linq->where($query)->get());
     }
 
     public function sort(string $key, int $order = Collection::ASC): self
