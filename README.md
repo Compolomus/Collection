@@ -8,11 +8,11 @@
 [![Code Climate](https://codeclimate.com/github/Compolomus/Collection/badges/gpa.svg)](https://codeclimate.com/github/Compolomus/Collection)
 [![Downloads](https://poser.pugx.org/compolomus/Collection/downloads)](https://packagist.org/packages/compolomus/Collection)
 
-## Установка:
+## Install:
 
 composer require compolomus/Collection
 
-## Применение:
+## Usage:
 
 ```php
 
@@ -20,6 +20,169 @@ use Compolomus\Collection\Collection;
 
 require __DIR__ . '/vendor/autoload.php';
 
+// New collection
 
+$collection = new Collection('stdClass');
+
+for ($i = 0; $i <= 42; $i++) {
+    $add = new stdClass();
+    $add->test = $i;
+    $collection->addOne($add);
+}
+
+/*
+// batch add
+$array = [];
+for ($i = 0; $i <= 42; $i++) {
+    $add = new stdClass();
+    $add->test = $i;
+    $array[] = $add;
+}
+$collection->addAll($array);
+  */
+
+// Limit
+
+$limit1 = $collection->immutable()->limit(5);
+
+echo '<pre>' . print_r($limit1->get(), true) . '</pre>';
+/*
+Array
+(
+    [0] => stdClass Object
+        (
+            [test] => 0
+        )
+
+    [1] => stdClass Object
+        (
+            [test] => 1
+        )
+
+    [2] => stdClass Object
+        (
+            [test] => 2
+        )
+
+    [3] => stdClass Object
+        (
+            [test] => 3
+        )
+
+    [4] => stdClass Object
+        (
+            [test] => 4
+        )
+)
+ */
+
+$limit2 = $collection->immutable()->limit(3, 3);
+
+echo '<pre>' . print_r($limit2->get(), true) . '</pre>';
+/*
+Array
+(
+    [0] => stdClass Object
+        (
+            [test] => 3
+        )
+
+    [1] => stdClass Object
+        (
+            [test] => 4
+        )
+
+    [2] => stdClass Object
+        (
+            [test] => 5
+        )
+)
+ */
+
+// Count
+
+echo $collection->count(); //43
+echo $limit1->count(); // 5
+echo $limit2->count(); // 3
+
+// Sort
+
+$sort = $limit2->immutable()->sort('test', Collection::DESC);
+
+echo '<pre>' . print_r($sort->get(), true) . '</pre>';
+/*
+Array
+(
+    [2] => stdClass Object
+        (
+            [test] => 5
+        )
+
+    [1] => stdClass Object
+        (
+            [test] => 4
+        )
+
+    [0] => stdClass Object
+        (
+            [test] => 3
+        )
+)
+ */
+
+// LINQ
+
+$linq = $collection->where('test > 33');
+
+echo '<pre>' . print_r($linq->get(), true) . '</pre>';
+/*
+Array
+(
+    [0] => stdClass Object
+        (
+            [test] => 34
+        )
+
+    [1] => stdClass Object
+        (
+            [test] => 35
+        )
+
+    [2] => stdClass Object
+        (
+            [test] => 36
+        )
+
+    [3] => stdClass Object
+        (
+            [test] => 37
+        )
+
+    [4] => stdClass Object
+        (
+            [test] => 38
+        )
+
+    [5] => stdClass Object
+        (
+            [test] => 39
+        )
+
+    [6] => stdClass Object
+        (
+            [test] => 40
+        )
+
+    [7] => stdClass Object
+        (
+            [test] => 41
+        )
+
+    [8] => stdClass Object
+        (
+            [test] => 42
+        )
+) 
+ */
 
 ```
